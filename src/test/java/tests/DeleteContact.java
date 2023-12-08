@@ -5,15 +5,15 @@ import config.AppiumConfig;
 import dto.ContactDTO;
 import dto.UserDTO;
 import org.testng.Assert;
-import org.testng.annotations.*;
-import pages.AddNewContactPage;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import pages.ContactListPage;
 import pages.SplashPage;
 
-public class AddNewContactTests extends AppiumConfig {
+public class DeleteContact extends AppiumConfig {
 
     Faker faker = new Faker();
-    boolean flagAlert = false;
 
     @BeforeClass
     public void beforeClass() {
@@ -25,15 +25,6 @@ public class AddNewContactTests extends AppiumConfig {
                         .build());
     }
 
-    @AfterMethod
-    public void afterMethod() {
-
-        if (flagAlert) {
-            flagAlert = false;
-            new AddNewContactPage(driver).acceptAlert().clickBack();
-        }
-    }
-
     @AfterClass
     public void afterClass() {
 
@@ -41,7 +32,25 @@ public class AddNewContactTests extends AppiumConfig {
     }
 
     @Test
-    public void positiveAddNewContact() {
+    public void deleteOneContactPositive() {
+
+        String phone = faker.number().digits(10);
+
+        Assert.assertFalse(new ContactListPage(driver).add()
+                .addNewContactPositive(ContactDTO.builder()
+                        .name(faker.name().firstName())
+                        .lastName(faker.name().lastName())
+                        .email(faker.internet().emailAddress())
+                        .phone(phone)
+                        .address(faker.address().fullAddress())
+                        .description(faker.demographic().race())
+                        .build())
+                .removeSingle(phone)
+                .isPhonePresent(phone));
+    }
+
+    @Test
+    public void deleteAllContacts() {
 
         String phone = faker.number().digits(10);
 //        String phone = new Random().nextInt(1000) + 1000;
@@ -55,23 +64,7 @@ public class AddNewContactTests extends AppiumConfig {
                         .address(faker.address().fullAddress())
                         .description(faker.demographic().race())
                         .build())
-                .isPhonePresent(phone));
-    }
-
-    @Test
-    public void negativeTestEmptyPhone() {
-
-        flagAlert = true;
-
-        Assert.assertTrue(new ContactListPage(driver).add()
-                .addNewContactNegative(ContactDTO.builder()
-                        .name(faker.name().firstName())
-                        .lastName(faker.name().lastName())
-                        .email(faker.internet().emailAddress())
-                        .phone("")
-                        .address(faker.address().fullAddress())
-                        .description(faker.demographic().race())
-                        .build())
-                .validateAlertTitle());
+                .removeAll()
+                .validateContactListEmpty());
     }
 }

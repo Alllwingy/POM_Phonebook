@@ -18,11 +18,11 @@ public class LoginTests extends AppiumConfig {
 
         if (flagAlert) {
             flagAlert = false;
-            new AuthenticationPage(driver).clickAlertButton();
+            new AuthenticationPage(driver).acceptAlert();
         }
         if (flagLogout) {
             flagLogout = false;
-            new ContactListPage(driver).clickLogout();
+            new ContactListPage(driver).logout();
         }
     }
 
@@ -34,7 +34,7 @@ public class LoginTests extends AppiumConfig {
                         .email("document@gmail.com")
                         .password("Task$12345")
                         .build())
-                .validateContactListOpened());
+                .validateContactListPageOpened());
 
         flagLogout = true;
     }
@@ -44,8 +44,8 @@ public class LoginTests extends AppiumConfig {
 
         Assert.assertTrue(new SplashPage(driver).goToAuthenticationPage()
                 .fillPassword("Task$12345")
-                .clickLoginButtonNegative()
-                .validateErrorTitleAlertCorrect());
+                .clickLoginNegative()
+                .validateAlertTitle());
 
         flagAlert = true;
     }

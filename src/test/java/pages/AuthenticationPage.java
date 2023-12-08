@@ -7,83 +7,76 @@ import org.openqa.selenium.support.FindBy;
 
 public class AuthenticationPage extends BasePage {
 
-
     public AuthenticationPage(AppiumDriver<MobileElement> driver) {
         super(driver);
     }
 
     @FindBy(xpath = "//*[@resource-id='com.sheygam.contactapp:id/inputEmail']")
     MobileElement inputEmail;
-
     @FindBy(xpath = "//*[@resource-id='com.sheygam.contactapp:id/inputPassword']")
     MobileElement inputPassword;
-
     @FindBy(xpath = "//*[@resource-id='com.sheygam.contactapp:id/regBtn']")
     MobileElement buttonRegistration;
-
     @FindBy(xpath = "//*[@resource-id='com.sheygam.contactapp:id/loginBtn']")
     MobileElement buttonLogin;
-
     @FindBy(xpath = "//*[@resource-id='android:id/alertTitle']")
-    MobileElement alertTextTitle;
-    
+    MobileElement alertTitle;
     @FindBy(xpath = "//*[@resource-id='android:id/button1']")
-    MobileElement alertButton;
+    MobileElement alertAccept;
 
-    public ContactListPage clickRegistrationButton() {
+    public ContactListPage clickRegistrationPositive() {
 
-        clickBase(buttonRegistration);
+        click(buttonRegistration);
         return new ContactListPage(driver);
     }
 
-    public ContactListPage clickLoginButton() {
+    public AuthenticationPage clickRegistrationNegative() {
 
-        clickBase(buttonLogin);
+        click(buttonRegistration);
+        return this;
+    }
+
+    public ContactListPage clickLoginPositive() {
+
+        click(buttonLogin);
         return new ContactListPage(driver);
     }
 
-    public AuthenticationPage clickLoginButtonNegative() {
+    public AuthenticationPage clickLoginNegative() {
 
-        clickBase(buttonLogin);
+        click(buttonLogin);
         return this;
     }
 
-    public AuthenticationPage clickRegistrationButtonNegative() {
+    public void acceptAlert() {
 
-        clickBase(buttonRegistration);
-        return this;
-    }
-
-    public AuthenticationPage clickAlertButton() {
-
-        clickBase(alertButton);
-        return this;
+        click(alertAccept);
     }
 
     public AuthenticationPage fillEmail(String email) {
 
-        typeTextBase(inputEmail, email);
+        typeText(inputEmail, email);
         return this; // this - object of this class
     }
 
     public AuthenticationPage fillPassword(String password) {
 
-        typeTextBase(inputPassword, password);
+        typeText(inputPassword, password);
         return this;
-    }
-
-    public ContactListPage login(UserDTO user) {
-
-        return fillEmail(user.getEmail()).fillPassword(user.getPassword()).clickLoginButton();
     }
 
     public ContactListPage register(UserDTO user) {
 
-        return fillEmail(user.getEmail()).fillPassword(user.getPassword()).clickRegistrationButton();
+        return fillEmail(user.getEmail()).fillPassword(user.getPassword()).clickRegistrationPositive();
     }
 
-    public boolean validateErrorTitleAlertCorrect() {
+    public ContactListPage login(UserDTO user) {
 
-        return isTextEqual(alertTextTitle, "Error");
+        return fillEmail(user.getEmail()).fillPassword(user.getPassword()).clickLoginPositive();
+    }
+
+    public boolean validateAlertTitle() {
+
+        return isTextEqual(alertTitle, "Error");
     }
 }

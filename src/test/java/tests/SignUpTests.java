@@ -20,11 +20,11 @@ public class SignUpTests extends AppiumConfig {
 
         if (flagAlert) {
             flagAlert = false;
-            new AuthenticationPage(driver).clickAlertButton();
+            new AuthenticationPage(driver).acceptAlert();
         }
         if (flagLogout) {
             flagLogout = false;
-            new ContactListPage(driver).clickLogout();
+            new ContactListPage(driver).logout();
         }
     }
 
@@ -36,7 +36,7 @@ public class SignUpTests extends AppiumConfig {
                         .email(faker.internet().emailAddress())
                         .password(faker.internet().password() + "A$")
                         .build())
-                .validateContactListOpened());
+                .validateContactListPageOpened());
 
         flagLogout = true;
     }
@@ -46,8 +46,8 @@ public class SignUpTests extends AppiumConfig {
 
         Assert.assertTrue(new SplashPage(driver).goToAuthenticationPage()
                 .fillPassword(faker.internet().password() + "A$")
-                .clickRegistrationButtonNegative()
-                .validateErrorTitleAlertCorrect());
+                .clickRegistrationNegative()
+                .validateAlertTitle());
 
         flagAlert = true;
     }

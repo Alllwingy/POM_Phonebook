@@ -32,53 +32,53 @@ public class AddNewContactPage extends BasePage {
 
     public AddNewContactPage sendName(String name) {
 
-        typeTextBase(inputName, name);
+        typeText(inputName, name);
         return this;
     }
 
     public AddNewContactPage sendLastName(String lastName) {
 
-        typeTextBase(inputLastName, lastName);
+        typeText(inputLastName, lastName);
         return this;
     }
 
     public AddNewContactPage sendEmail(String email) {
 
-        typeTextBase(inputEmail, email);
+        typeText(inputEmail, email);
         return this;
     }
 
     public AddNewContactPage sendPhone(String phone) {
 
-        typeTextBase(inputPhone, phone);
+        typeText(inputPhone, phone);
         return this;
     }
 
     public AddNewContactPage sendAddress(String address) {
 
-        typeTextBase(inputAddress, address);
+        typeText(inputAddress, address);
         return this;
     }
 
     public AddNewContactPage sendDescription(String description) {
 
-        typeTextBase(inputDescription, description);
+        typeText(inputDescription, description);
         return this;
     }
 
-    public ContactListPage clickCreate() {
+    public ContactListPage clickCreatePositive() {
 
-        clickBase(buttonCreate);
+        click(buttonCreate);
         return new ContactListPage(driver);
     }
 
     public AddNewContactPage clickCreateNegative() {
 
-        clickBase(buttonCreate);
+        click(buttonCreate);
         return this;
     }
 
-    public ContactListPage addNewContact(ContactDTO contact) {
+    public ContactListPage addNewContactPositive(ContactDTO contact) {
 
         return sendName(contact.getName())
                 .sendLastName(contact.getLastName()) // due to "this"
@@ -86,7 +86,7 @@ public class AddNewContactPage extends BasePage {
                 .sendPhone(contact.getPhone())
                 .sendAddress(contact.getAddress())
                 .sendDescription(contact.getDescription())
-                .clickCreate();
+                .clickCreatePositive();
     }
 
     public AddNewContactPage addNewContactNegative(ContactDTO contact) {
@@ -100,14 +100,20 @@ public class AddNewContactPage extends BasePage {
                 .clickCreateNegative();
     }
 
-    public boolean validateErrorMessage() {
+    public boolean validateAlertTitle() {
 
         return isTextEqual(alertTitle, "Error");
     }
 
     public AddNewContactPage acceptAlert() {
 
-        clickBase(acceptAlert);
+        click(acceptAlert);
         return this;
+    }
+
+    public ContactListPage backToContactList() {
+
+        clickBack();
+        return new ContactListPage(driver);
     }
 }
